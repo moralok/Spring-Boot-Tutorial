@@ -1,7 +1,6 @@
 package com.moralok.tutorial.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.moralok.tutorial.TvCharacterDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -12,7 +11,7 @@ public class TvSeries {
     @Null private Integer id;
     @NotNull private String name;
     @DecimalMin("1") private int seasonCount;
-    @Valid @NotNull @Size(min = 2) private List<TvCharacterDto> tvCharacters;
+    @Valid @NotNull @Size(min = 2) private List<TvCharacter> tvCharacters;
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @Past private Date originalRelease;
 
@@ -51,11 +50,11 @@ public class TvSeries {
         this.seasonCount = seasonCount;
     }
 
-    public List<TvCharacterDto> getTvCharacters() {
+    public List<TvCharacter> getTvCharacters() {
         return tvCharacters;
     }
 
-    public void setTvCharacters(List<TvCharacterDto> tvCharacters) {
+    public void setTvCharacters(List<TvCharacter> tvCharacters) {
         this.tvCharacters = tvCharacters;
     }
 
@@ -69,6 +68,10 @@ public class TvSeries {
 
     @Override
     public String toString() {
-        return this.getClass().getName() + "{id=" + id + ";name=" + name + "}";
+        StringBuffer buf = new StringBuffer();
+        buf.append(this.getClass().getName()).append("{id:").append(id);
+        buf.append(",name:").append(name).append(",seasonCount:").append(seasonCount);
+        buf.append("}");
+        return buf.toString();
     }
 }
