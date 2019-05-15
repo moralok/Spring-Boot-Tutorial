@@ -1,13 +1,14 @@
-package com.moralok.tutorial;
+package com.moralok.tutorial.pojo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.moralok.tutorial.TvCharacterDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.Date;
 import java.util.List;
 
-public class TvSeriesDto {
+public class TvSeries {
     @Null private Integer id;
     @NotNull private String name;
     @DecimalMin("1") private int seasonCount;
@@ -15,11 +16,11 @@ public class TvSeriesDto {
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd")
     @Past private Date originalRelease;
 
-    public TvSeriesDto() {
+    public TvSeries() {
 
     }
 
-    public TvSeriesDto(int id, String name, int seasonCount, Date originalRelease) {
+    public TvSeries(int id, String name, int seasonCount, Date originalRelease) {
         this.id = id;
         this.name = name;
         this.seasonCount = seasonCount;

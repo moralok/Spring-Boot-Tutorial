@@ -1,8 +1,11 @@
-package com.moralok.tutorial;
+package com.moralok.tutorial.controller;
 
+import com.moralok.tutorial.pojo.TvSeries;
+import com.moralok.tutorial.service.TvSeriesService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,16 +24,21 @@ public class TvSeriesController {
 
     public static final Log log = LogFactory.getLog(TvSeriesController.class);
 
+    @Autowired
+    TvSeriesService tvSeriesService;
+
     @GetMapping
-    public List<TvSeriesDto> getAll() {
+    public List<TvSeries> getAll() {
 
         if (log.isTraceEnabled()) {
             log.trace("这是开始！");
         }
 
-        List<TvSeriesDto> list = new ArrayList<>();
-        list.add(createWestWorld());
-        list.add(createPoi());
+        if (log.isTraceEnabled()) {
+            log.trace("getAll(); 被调用了");
+        }
+
+        List<TvSeries> list = tvSeriesService.getAllTvSeries();
 
         if (log.isErrorEnabled()) {
             log.error("这是结尾！");
@@ -40,7 +48,7 @@ public class TvSeriesController {
     }
 
     @GetMapping("/{id}")
-    public TvSeriesDto getOne(@PathVariable int id) {
+    public TvSeries getOne(@PathVariable int id) {
         if (log.isTraceEnabled()) {
             log.trace("getOne: " + id);
         }
@@ -55,17 +63,17 @@ public class TvSeriesController {
     }
 
     @PostMapping
-    public TvSeriesDto insertOne(@Valid @RequestBody TvSeriesDto tvSeriesDto) {
+    public TvSeries insertOne(@Valid @RequestBody TvSeries tvSeries) {
         if (log.isTraceEnabled()) {
-            log.trace("这里应该写新增 tvSeriesDto 到数据库的代码，传递进来的参数是: " + tvSeriesDto);
+            log.trace("这里应该写新增 tvSeries 到数据库的代码，传递进来的参数是: " + tvSeries);
         }
 
-        tvSeriesDto.setId(9999);
-        return tvSeriesDto;
+        tvSeries.setId(9999);
+        return tvSeries;
     }
 
     @PutMapping("/{id}")
-    public TvSeriesDto updateOne(@PathVariable int id, @RequestBody TvSeriesDto tvSeriesDto) {
+    public TvSeries updateOne(@PathVariable int id, @RequestBody TvSeries tvSeries) {
         if (log.isTraceEnabled()) {
             log.trace("updateOne: " + id);
         }
@@ -123,15 +131,15 @@ public class TvSeriesController {
         return IOUtils.toByteArray(is);
     }
 
-    private TvSeriesDto createWestWorld() {
+    private TvSeries createWestWorld() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2016, Calendar.OCTOBER, 2, 0, 0);
-        return new TvSeriesDto(101, "WestWorld", 2, calendar.getTime());
+        return new TvSeries(101, "WestWorld", 2, calendar.getTime());
     }
 
-    private TvSeriesDto createPoi() {
+    private TvSeries createPoi() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2011, Calendar.SEPTEMBER, 22, 0, 0);
-        return new TvSeriesDto(102, "Person of Interest", 5, calendar.getTime());
+        return new TvSeries(102, "Person of Interest", 5, calendar.getTime());
     }
 }
